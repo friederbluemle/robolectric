@@ -5,11 +5,14 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.Window;
+import android.widget.LinearLayout;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.TestRunners;
+import org.robolectric.annotation.Config;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -137,6 +140,12 @@ public class ActivityControllerTest {
     transcript.assertEventsInclude("finishedOnUserLeaveHint", "onUserLeaveHint");
   }
 
+  @Test @Config(emulateSdk = 19)
+  public void attach_shouldWorkWithAPI19() {
+    MyActivity activity = Robolectric.buildActivity(MyActivity.class).create().get();
+    assertThat(activity).isNotNull();
+  }
+
   public static class MyActivity extends Activity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -148,6 +157,8 @@ public class ActivityControllerTest {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
+      getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+      setContentView(new LinearLayout(Robolectric.application));
       transcribeWhilePaused("onCreate");
       transcript.add("finishedOnCreate");
     }

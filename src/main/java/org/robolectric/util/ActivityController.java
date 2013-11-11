@@ -6,6 +6,7 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -84,6 +85,7 @@ public class ActivityController<T extends Activity> {
       intent.setClass(application, activity.getClass());
     }
     ActivityInfo activityInfo = new ActivityInfo();
+    field("applicationInfo").ofType(ApplicationInfo.class).in(activityInfo).set(new ApplicationInfo());
     String activityTitle = getActivityTitle();
 
     ClassLoader cl = baseContext.getClassLoader();
