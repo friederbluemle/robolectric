@@ -23,4 +23,17 @@ echo "Installing com.android.support:support-v4 from $jarLocation"
 mvn -q install:install-file -DgroupId=com.android.support -DartifactId=support-v4 \
   -Dversion=19.1.0 -Dpackaging=jar -Dfile="$jarLocation"
 
+jarLocation="$ANDROID_HOME/extras/android/m2repository/com/android/support/appcompat-v7/19.1.0/appcompat-v7-19.1.0.jar"
+if [ ! -f "$jarLocation" ]; then
+  jarLocation="$ANDROID_HOME/extras/android/support/v7/appcompat/libs/android-support-v7-appcompat.jar"
+  if [ ! -f "$jarLocation" ]; then
+    echo "appcompat-v7 artifact not found!";
+    exit 1;
+  fi
+fi
+
+echo "Installing com.android.support:appcompat-v7 from $jarLocation"
+mvn -q install:install-file -DgroupId=com.android.support -DartifactId=appcompat-v7 \
+  -Dversion=19.1.0 -Dpackaging=jar -Dfile="$jarLocation"
+
 echo "Done!"
